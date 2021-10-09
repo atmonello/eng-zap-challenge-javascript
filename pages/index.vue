@@ -11,37 +11,34 @@
     </v-row>
     <v-row class="py-6 text-center">
       <v-col cols="12">
-        <h3 class="text-h3">Teste de engenharia do GrupoZap</h3>
-      </v-col>
-      <v-col cols="12">
-        <h5 class="text-h5">
+        <h3 class="text-h3">
           Clique abaixo para filtrar os imóveis por portal
-        </h5>
+        </h3>
       </v-col>
     </v-row>
-    <v-row class="py-6 text-center">
-      <v-col cols="12" md="6">
-        <v-btn
-          class="
-            rounded-lg
-            pa-6
-            challenge__home__btn challenge__home__btn--viva
-            vivaRealBlue
-          "
-        >
-          <v-img src="/logo-vivareal.png" max-height="36" contain />
-        </v-btn>
+    <v-row class="py-6">
+      <v-col cols="12" md="6" class="d-flex justify-center">
+        <brand-card
+          logo-image="/logo-vivareal.png"
+          card-background="vivaRealBlue"
+          destination="/vivareal"
+        ></brand-card>
       </v-col>
-      <v-col cols="12" md="6">
-        <v-btn
-          class="rounded-lg pa-6 challenge__home__btn challenge__home__btn--zap"
-        >
-          <v-img src="/logo-zap.png" max-height="36" contain />
-        </v-btn>
+      <v-col cols="12" md="6" class="d-flex justify-center">
+        <brand-card logo-image="/logo-zap.png" destination="/zap"></brand-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
+
+<script>
+import BrandCard from "@/components/home/brandCard.vue";
+export default {
+  components: {
+    BrandCard,
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .challenge {
