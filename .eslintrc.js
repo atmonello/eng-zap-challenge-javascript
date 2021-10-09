@@ -6,7 +6,7 @@ module.exports = {
     "extends": [
         "eslint:recommended",
         "plugin:prettier/recommended",
-        "plugin:nuxt-recommended",
+        "plugin:nuxt/recommended",
     ],
     "parserOptions": {
         "ecmaVersion": 12,
