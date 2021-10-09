@@ -8,10 +8,11 @@
     <v-switch
       class="pa-0 ma-0"
       inset
-      v-model="$nuxt.$vuetify.theme.dark"
       prepend-icon=""
       hide-details
       slot="default"
+      :value="isDark"
+      @change="changeTheme"
     ></v-switch>
     <template v-slot:append>
       <v-icon class="theme__switch__icon--append">mdi-weather-night</v-icon>
@@ -29,3 +30,26 @@
   }
 }
 </style>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters("screen", ["isLightTheme", "isDarkTheme"]),
+  },
+  methods: {
+    ...mapActions("screen", ["setLightTheme", "setDarkTheme"]),
+    changeTheme() {
+      this.isDark = !this.isDark;
+      if (this.isDark) this.setDarkTheme();
+      else this.setLightTheme();
+      this.$nuxt.$vuetify.theme.dark = this.isDark;
+    },
+  },
+  data() {
+    return {
+      isDark: false,
+    };
+  },
+};
+</script>
