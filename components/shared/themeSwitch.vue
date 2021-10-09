@@ -32,18 +32,16 @@
 </style>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
-  computed: {
-    ...mapGetters("screen", ["isLightTheme", "isDarkTheme"]),
-  },
+  name: "theme-switcher",
   methods: {
     ...mapActions("screen", ["setLightTheme", "setDarkTheme"]),
     changeTheme() {
       this.isDark = !this.isDark;
+      this.$nuxt.$vuetify.theme.dark = this.isDark;
       if (this.isDark) this.setDarkTheme();
       else this.setLightTheme();
-      this.$nuxt.$vuetify.theme.dark = this.isDark;
     },
   },
   data() {
