@@ -2,21 +2,24 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',
-    '^vue$': 'vue/dist/vue.common.js'
   },
   moduleFileExtensions: [
     'js',
     'vue',
     'json'
   ],
+  moduleDirectories: [
+    "node_modules",
+    "components",
+  ],
   transform: {
-    '^.+\\.js$': 'babel-jest',
+    '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
     '.*\\.(vue)$': 'vue-jest'
   },
+  transformIgnorePatterns: ["/node_modules/"],
+  watchman: false,
+  snapshotSerializers: ['<rootDir>/node_modules/jest-serializer-vue'],
   collectCoverage: true,
-  collectCoverageFrom: [
-    '<rootDir>/components/**/*.vue',
-    '<rootDir>/pages/**/*.vue'
-  ],
-  testEnvironment: 'jsdom'
+  collectCoverageFrom: ["**/*.{js,vue}", "!**/node_modules/**"],
+  testEnvironment: "jsdom"
 }

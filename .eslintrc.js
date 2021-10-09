@@ -13,7 +13,11 @@ module.exports = {
         sourceType: "module",
     },
     plugins: ["prettier"],
-    ignorePatterns: ["*.config.js", ".eslintrc.js"],
+    ignorePatterns: [
+        "*.config.js",
+        ".eslintrc.js",
+        "test/*"
+    ],
     rules: {
         indent: ["error", 2],
         "nuxt-no-cjs-in-config": "off",
