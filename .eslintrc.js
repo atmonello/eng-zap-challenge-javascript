@@ -1,21 +1,19 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es2021": true
+    env: {
+        browser: true,
+        es2021: true,
     },
-    "extends": [
+    extends: [
         "eslint:recommended",
         "plugin:prettier/recommended",
         "plugin:nuxt/recommended",
     ],
-    "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
+    parserOptions: {
+        ecmaVersion: 12,
+        sourceType: "module",
     },
-    "plugins": [
-        "prettier"
-    ],
-    "rules": {
+    plugins: ["prettier"],
+    rules: {
         indent: ["error", 2],
         "nuxt-no-cjs-in-config": "off",
         "no-console": 2,
@@ -25,9 +23,9 @@ module.exports = {
             {
                 allowTemplateLiterals: true,
                 avoidEscape: true,
-            }
+            },
         ],
         semi: ["error", "always"],
         "comma-dangle": ["error", "only-multiline"],
-    }
+    },
 };
