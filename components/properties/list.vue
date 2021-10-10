@@ -8,17 +8,18 @@
         v-for="property in properties"
         :key="property.id"
       >
-        <p>
-          Imóvel em {{ property.address.neighborhood }},
-          {{ property.address.city }}
-        </p>
+        <list-item :property="property"></list-item>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import ListItem from "@/components/properties/listItem.vue";
 export default {
+  components: {
+    ListItem,
+  },
   props: {
     properties: {
       type: Array,

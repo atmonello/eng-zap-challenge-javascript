@@ -55,7 +55,7 @@ export default {
     ...mapGetters("screen", ["isBlockedScreen"]),
     selectedProperties() {
       if (!this.listProperties) return [];
-      return this.listProperties;
+      return this.listProperties.slice(0, 10);
     },
   },
   data: () => ({
