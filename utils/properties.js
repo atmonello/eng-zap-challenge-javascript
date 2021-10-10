@@ -22,14 +22,9 @@ export const zapValidation = {
       lon: propertyLongitude,
     } = property.address.geoLocation.location;
 
-    const {
-      businessType,
-      price: propertySalePrice = 0,
-      rentalTotalPrice: propertyRentalPrice = 0,
-    } = property.pricingInfos;
+    const { businessType, price = 0 } = property.pricingInfos;
 
-    const validRentalPrice =
-      propertyRentalPrice >= zapValidation.minRentalPrice;
+    const validRentalPrice = price >= zapValidation.minRentalPrice;
 
     if (businessType === "RENTAL" && validRentalPrice) {
       return {
@@ -43,10 +38,9 @@ export const zapValidation = {
         propertyLongitude
       );
       const validateSalePrice =
-        propertySalePrice >=
+        price >=
         zapValidation.minRentalPrice * (isPropertyInsideBoundingBox ? 0.9 : 1);
-      const validateUsableAreaPrice =
-        propertySalePrice / property.usableAreas > 3500;
+      const validateUsableAreaPrice = price / property.usableAreas > 3500;
       if (validateUsableAreaPrice && validateSalePrice) {
         return {
           properties: [...list.properties, property],
@@ -63,22 +57,14 @@ export const vivaValidation = {
   maxSalePrice: 700000,
   maxRentalPrice: 4000,
   processProperties(list, property) {
-    const {
-      monthlyCondoFee,
-      price: propertySalePrice = 0,
-      rentalTotalPrice: propertyRentalPrice = 0,
-      businessType,
-    } = property.pricingInfos;
+    const { monthlyCondoFee, price = 0, businessType } = property.pricingInfos;
 
     const {
       lon: propertyLongitude,
       lat: propertyLatitude,
     } = property.address.geoLocation.location;
 
-    if (
-      businessType === "SALE" &&
-      propertySalePrice <= vivaValidation.maxSalePrice
-    ) {
+    if (businessType === "SALE" && price <= vivaValidation.maxSalePrice) {
       return {
         properties: [...list.properties, property],
         sale: [...list.sale, property],
@@ -90,9 +76,9 @@ export const vivaValidation = {
         propertyLongitude
       );
       const validRentalPrice =
-        propertyRentalPrice <=
+        price <=
         vivaValidation.maxRentalPrice * (isPropertyInsideBoundingBox ? 1.5 : 1);
-      const validCondoFee = monthlyCondoFee < propertyRentalPrice * 0.3;
+      const validCondoFee = monthlyCondoFee < price * 0.3;
 
       if (validRentalPrice && validCondoFee) {
         return {
@@ -106,3 +92,15 @@ export const vivaValidation = {
     return list;
   },
 };
+
+export function formatPrice(
+  price,
+  currency = "R$ ",
+  decimalSeparator = ",",
+  thousandSeparator = "."
+) {
+  return `${currency}${Number(price)
+    .toFixed(2)
+    .replace(/\B(?=(\d{3})+\.)/g, `$&${thousandSeparator}`)
+    .replace(/\.([^\\.]*)$/, `${decimalSeparator}$1`)}`;
+}
