@@ -32,9 +32,12 @@
 </style>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "theme-switcher",
+  computed: {
+    ...mapGetters("screen", ["isDarkTheme"]),
+  },
   methods: {
     ...mapActions("screen", ["setLightTheme", "setDarkTheme"]),
     changeTheme() {
@@ -48,6 +51,9 @@ export default {
     return {
       isDark: false,
     };
+  },
+  mounted() {
+    if (this.isDarkTheme) this.isDark = true;
   },
 };
 </script>
