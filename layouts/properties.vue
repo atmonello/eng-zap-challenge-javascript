@@ -1,25 +1,19 @@
 <template>
   <v-app>
-    <v-app-bar fixed flat>
+    <v-app-bar absolute short flat class="px-6">
+      <v-app-bar-nav-icon>
+        <v-btn icon to="/">
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
+      </v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <theme-switch></theme-switch>
     </v-app-bar>
-    <v-main>
+    <v-main class="mt-8 px-10 py-12">
       <nuxt />
     </v-main>
   </v-app>
 </template>
-
-<style lang="scss" scoped>
-.theme--dark.v-application {
-  background-color: var(--v-background-base, #121212) !important;
-  color: #fff;
-}
-.theme--light.v-application {
-  background-color: var(--v-background-base, white) !important;
-  color: #fff;
-}
-</style>
 
 <script>
 import ThemeSwitch from "@/components/shared/themeSwitch.vue";
