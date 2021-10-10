@@ -39,19 +39,15 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.5",
     "eslint": "^7.29.0",
-    "eslint-config-prettier": "^8.3.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-nuxt": "^2.0.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^7.19.1",
     "flush-promises": "^1.0.2",
     "husky": "^7.0.0",
     "jest": "^27.0.5",
     "jest-serializer-vue": "^2.0.2",
     "jest-transform-stub": "^2.0.0",
     "jsdom": "^18.0.0",
-    "prettier": "^2.4.1",
     "vue-jest": "^3.0.4"
   }
 }
