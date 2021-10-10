@@ -8,7 +8,7 @@ export const state = {
     },
     2: {
       name: "VivaReal",
-      slug: "viva",
+      slug: "vivareal",
       logo: "/logo-vivareal.png",
       color: "vivaRealBlue",
     },
@@ -16,13 +16,13 @@ export const state = {
 };
 
 export const getters = {
-  getPortals(state) {
+  listPortals(state) {
     return Object.values(state.portals);
   },
   getZap(state, getters) {
-    return getters.getPortals.filter((p) => p.slug === "zap");
+    return getters.listPortals.filter((p) => p.slug === "zap");
   },
   getVivaReal(state, getters) {
-    return getters.getPortals.filter((p) => p.slug === "zap");
+    return getters.listPortals.filter((p) => p.slug === "zap");
   },
 };
