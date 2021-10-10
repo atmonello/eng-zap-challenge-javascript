@@ -17,25 +17,32 @@
       </v-col>
     </v-row>
     <v-row class="py-6">
-      <v-col cols="12" md="6" class="d-flex justify-center">
+      <v-col
+        cols="12"
+        md="6"
+        class="d-flex justify-center"
+        v-for="portal in getPortals"
+        :key="portal.slug"
+      >
         <brand-card
-          logo-image="/logo-vivareal.png"
-          card-background="vivaRealBlue"
-          destination="/vivareal"
+          :logo-image="portal.logo"
+          :card-background="portal.color"
+          :destination="`/portals/${portal.slug}/properties`"
         ></brand-card>
-      </v-col>
-      <v-col cols="12" md="6" class="d-flex justify-center">
-        <brand-card logo-image="/logo-zap.png" destination="/zap"></brand-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import BrandCard from "@/components/home/brandCard.vue";
 export default {
   components: {
     BrandCard,
+  },
+  computed: {
+    ...mapGetters("portals", ["getPortals"]),
   },
 };
 </script>
