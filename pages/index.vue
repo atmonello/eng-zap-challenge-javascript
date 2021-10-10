@@ -2,18 +2,12 @@
   <v-container class="challenge__home my-16">
     <v-row class="pt-10">
       <v-col cols="12" class="d-flex justify-center">
-        <img
-          class="challenge__home__logo--group"
-          src="/logo-grupo.png"
-          alt="Logo do GrupoZap"
-        />
+        <img class="challenge__home__logo--group" src="/logo-grupo.png" alt="Logo do GrupoZap" />
       </v-col>
     </v-row>
     <v-row class="py-6 text-center">
       <v-col cols="12">
-        <h3 class="text-h3">
-          Clique abaixo para filtrar os imóveis por portal
-        </h3>
+        <h3 class="text-h3">Clique abaixo para filtrar os imóveis por portal</h3>
       </v-col>
     </v-row>
     <v-row class="py-6">
@@ -21,7 +15,7 @@
         cols="12"
         md="6"
         class="d-flex justify-center"
-        v-for="portal in getPortals"
+        v-for="portal in listPortals"
         :key="portal.slug"
       >
         <brand-card
@@ -42,7 +36,7 @@ export default {
     BrandCard,
   },
   computed: {
-    ...mapGetters("portals", ["getPortals"]),
+    ...mapGetters("portals", ["listPortals"]),
   },
 };
 </script>
