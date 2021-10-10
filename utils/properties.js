@@ -28,49 +28,34 @@ export const zapValidation = {
       rentalTotalPrice: propertyRentalPrice = 0,
     } = property.pricingInfos;
 
-    if (businessType === "RENTAL") {
-      if (propertyRentalPrice >= zapValidation.minRentalPrice) {
+    const validRentalPrice =
+      propertyRentalPrice >= zapValidation.minRentalPrice;
+
+    if (businessType === "RENTAL" && validRentalPrice) {
+      return {
+        properties: [...list.properties, property],
+        rental: [...list.rental, property],
+        sale: list.sale,
+      };
+    } else if (businessType === "SALE" && property.usableAreas > 0) {
+      const isPropertyInsideBoundingBox = checkPropertyInsideBoundingBox(
+        propertyLatitude,
+        propertyLongitude
+      );
+      const validateSalePrice =
+        propertySalePrice >=
+        zapValidation.minRentalPrice * (isPropertyInsideBoundingBox ? 0.9 : 1);
+      const validateUsableAreaPrice =
+        propertySalePrice / property.usableAreas > 3500;
+      if (validateUsableAreaPrice && validateSalePrice) {
         return {
           properties: [...list.properties, property],
-          rental: [...list.rental, property],
-          sale: list.sale,
-        };
-      }
-      return list;
-    } else {
-      if (
-        zapValidation.validateUsableAreaPrice(
-          property.usableAreas,
-          propertySalePrice
-        ) ||
-        zapValidation.validateSalePriceInsideBoundingBox(
-          propertyLatitude,
-          propertyLongitude,
-          propertySalePrice
-        ) ||
-        propertySalePrice >= zapValidation.minSalePrice
-      ) {
-        return {
-          properties: [...list.properties, property],
-          rental: list.rental,
           sale: [...list.sale, property],
+          rental: list.rental,
         };
       }
-      return list;
     }
-  },
-  validateUsableAreaPrice(usableAreas, salePrice) {
-    return usableAreas > 0 && salePrice / usableAreas > 3500;
-  },
-  validateSalePriceInsideBoundingBox(
-    propertyLatitude,
-    propertyLongitude,
-    salePrice
-  ) {
-    return (
-      checkPropertyInsideBoundingBox(propertyLatitude, propertyLongitude) &&
-      salePrice >= zapValidation.minSalePrice * 0.9
-    );
+    return list;
   },
 };
 
