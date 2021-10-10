@@ -17,8 +17,10 @@ export const zapValidation = {
   minSalePrice: 600000,
   minRentalPrice: 3500,
   processProperties(list, property) {
-    const { lat: propertyLatitude, lon: propertyLongitude } =
-      property.address.geoLocation.location;
+    const {
+      lat: propertyLatitude,
+      lon: propertyLongitude,
+    } = property.address.geoLocation.location;
 
     const {
       businessType,
@@ -69,5 +71,53 @@ export const zapValidation = {
       checkPropertyInsideBoundingBox(propertyLatitude, propertyLongitude) &&
       salePrice >= zapValidation.minSalePrice * 0.9
     );
+  },
+};
+
+export const vivaValidation = {
+  maxSalePrice: 700000,
+  maxRentalPrice: 4000,
+  processProperties(list, property) {
+    const {
+      monthlyCondoFee,
+      price: propertySalePrice = 0,
+      rentalTotalPrice: propertyRentalPrice = 0,
+      businessType,
+    } = property.pricingInfos;
+
+    const {
+      lon: propertyLongitude,
+      lat: propertyLatitude,
+    } = property.address.geoLocation.location;
+
+    if (
+      businessType === "SALE" &&
+      propertySalePrice <= vivaValidation.maxSalePrice
+    ) {
+      return {
+        properties: [...list.properties, property],
+        sale: [...list.sale, property],
+        rental: list.rental,
+      };
+    } else if (businessType === "RENTAL" && !isNaN(Number(monthlyCondoFee))) {
+      const isPropertyInsideBoundingBox = checkPropertyInsideBoundingBox(
+        propertyLatitude,
+        propertyLongitude
+      );
+      const validRentalPrice =
+        propertyRentalPrice <=
+        vivaValidation.maxRentalPrice * (isPropertyInsideBoundingBox ? 1.5 : 1);
+      const validCondoFee = monthlyCondoFee < propertyRentalPrice * 0.3;
+
+      if (validRentalPrice && validCondoFee) {
+        return {
+          properties: [...list.properties, property],
+          rental: [...list.rental, property],
+          sale: list.sale,
+        };
+      }
+    }
+
+    return list;
   },
 };

@@ -1,4 +1,4 @@
-import { zapValidation } from "@/utils/properties";
+import { zapValidation, vivaValidation } from "@/utils/properties";
 
 export const state = {
   properties: [],
@@ -37,6 +37,13 @@ export const getters = {
   },
   listZapProperties(state, getters) {
     return getters.listProperties.reduce(zapValidation.processProperties, {
+      properties: [],
+      rental: [],
+      sale: [],
+    });
+  },
+  listVivaProperties(state, getters) {
+    return getters.listProperties.reduce(vivaValidation.processProperties, {
       properties: [],
       rental: [],
       sale: [],
