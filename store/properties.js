@@ -2,19 +2,11 @@ import { zapValidation, vivaValidation } from "@/utils/properties";
 
 export const state = {
   properties: [],
-  propertiesById: {},
 };
 
 export const mutations = {
   setProperties(state, change) {
     state.properties = change;
-    state.propertiesById = change.reduce(
-      (properties, property) => ({
-        ...properties,
-        [property.id]: property,
-      }),
-      {}
-    );
   },
 };
 
@@ -34,6 +26,15 @@ export const getters = {
         !!p.address.city.length
       );
     });
+  },
+  listPropertiesById(state, getters) {
+    return getters.listProperties.reduce(
+      (properties, property) => ({
+        ...properties,
+        [property.id]: property,
+      }),
+      {}
+    );
   },
   listZapProperties(state, getters) {
     return getters.listProperties.reduce(zapValidation.processProperties, {

@@ -1,5 +1,15 @@
 <template>
-  <div>
-    <h1>Property ID: {{ $route.params.property }}</h1>
-  </div>
+  <v-container>
+    <property-detail></property-detail>
+  </v-container>
 </template>
+
+<script>
+import PropertyDetail from "@/components/property/detail.vue";
+export default {
+  layout: "properties",
+  components: {
+    PropertyDetail,
+  },
+};
+</script>
