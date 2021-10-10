@@ -17,57 +17,90 @@ export const zapValidation = {
   minSalePrice: 600000,
   minRentalPrice: 3500,
   processProperties(list, property) {
-    const { lat: propertyLatitude, lon: propertyLongitude } =
-      property.address.geoLocation.location;
+    const {
+      lat: propertyLatitude,
+      lon: propertyLongitude,
+    } = property.address.geoLocation.location;
+
+    const { businessType, price = 0 } = property.pricingInfos;
+
+    const validRentalPrice = price >= zapValidation.minRentalPrice;
+
+    if (businessType === "RENTAL" && validRentalPrice) {
+      return {
+        properties: [...list.properties, property],
+        rental: [...list.rental, property],
+        sale: list.sale,
+      };
+    } else if (businessType === "SALE" && property.usableAreas > 0) {
+      const isPropertyInsideBoundingBox = checkPropertyInsideBoundingBox(
+        propertyLatitude,
+        propertyLongitude
+      );
+      const validateSalePrice =
+        price >=
+        zapValidation.minRentalPrice * (isPropertyInsideBoundingBox ? 0.9 : 1);
+      const validateUsableAreaPrice = price / property.usableAreas > 3500;
+      if (validateUsableAreaPrice && validateSalePrice) {
+        return {
+          properties: [...list.properties, property],
+          sale: [...list.sale, property],
+          rental: list.rental,
+        };
+      }
+    }
+    return list;
+  },
+};
+
+export const vivaValidation = {
+  maxSalePrice: 700000,
+  maxRentalPrice: 4000,
+  processProperties(list, property) {
+    const { monthlyCondoFee, price = 0, businessType } = property.pricingInfos;
 
     const {
-      businessType,
-      price: propertySalePrice = 0,
-      rentalTotalPrice: propertyRentalPrice = 0,
-    } = property.pricingInfos;
+      lon: propertyLongitude,
+      lat: propertyLatitude,
+    } = property.address.geoLocation.location;
 
-    if (businessType === "RENTAL") {
-      if (propertyRentalPrice >= zapValidation.minRentalPrice) {
+    if (businessType === "SALE" && price <= vivaValidation.maxSalePrice) {
+      return {
+        properties: [...list.properties, property],
+        sale: [...list.sale, property],
+        rental: list.rental,
+      };
+    } else if (businessType === "RENTAL" && !isNaN(Number(monthlyCondoFee))) {
+      const isPropertyInsideBoundingBox = checkPropertyInsideBoundingBox(
+        propertyLatitude,
+        propertyLongitude
+      );
+      const validRentalPrice =
+        price <=
+        vivaValidation.maxRentalPrice * (isPropertyInsideBoundingBox ? 1.5 : 1);
+      const validCondoFee = monthlyCondoFee < price * 0.3;
+
+      if (validRentalPrice && validCondoFee) {
         return {
           properties: [...list.properties, property],
           rental: [...list.rental, property],
           sale: list.sale,
         };
       }
-      return list;
-    } else {
-      if (
-        zapValidation.validateUsableAreaPrice(
-          property.usableAreas,
-          propertySalePrice
-        ) ||
-        zapValidation.validateSalePriceInsideBoundingBox(
-          propertyLatitude,
-          propertyLongitude,
-          propertySalePrice
-        ) ||
-        propertySalePrice >= zapValidation.minSalePrice
-      ) {
-        return {
-          properties: [...list.properties, property],
-          rental: list.rental,
-          sale: [...list.sale, property],
-        };
-      }
-      return list;
     }
-  },
-  validateUsableAreaPrice(usableAreas, salePrice) {
-    return usableAreas > 0 && salePrice / usableAreas > 3500;
-  },
-  validateSalePriceInsideBoundingBox(
-    propertyLatitude,
-    propertyLongitude,
-    salePrice
-  ) {
-    return (
-      checkPropertyInsideBoundingBox(propertyLatitude, propertyLongitude) &&
-      salePrice >= zapValidation.minSalePrice * 0.9
-    );
+
+    return list;
   },
 };
+
+export function formatPrice(
+  price,
+  currency = "R$ ",
+  decimalSeparator = ",",
+  thousandSeparator = "."
+) {
+  return `${currency}${Number(price)
+    .toFixed(2)
+    .replace(/\B(?=(\d{3})+\.)/g, `$&${thousandSeparator}`)
+    .replace(/\.([^\\.]*)$/, `${decimalSeparator}$1`)}`;
+}
