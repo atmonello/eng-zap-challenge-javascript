@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-container class="challenge__properties">
     <list-container :selected-portal="selectedPortal" />
-  </div>
+  </v-container>
 </template>
 
 <script>
