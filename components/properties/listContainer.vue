@@ -15,12 +15,14 @@
                 v-model="filters.rental"
                 label="Aluguel"
                 class="px-4"
+                :disabled="!filters.sale"
               ></v-checkbox>
               <v-checkbox
                 hide-details
                 v-model="filters.sale"
                 label="Venda"
                 class="px-4"
+                :disabled="!filters.rental"
               ></v-checkbox>
             </v-card-actions>
           </v-card>
@@ -51,11 +53,24 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("properties", ["listProperties"]),
+    ...mapGetters("properties", [
+      "listProperties",
+      "listZapProperties",
+      "listVivaProperties",
+    ]),
     ...mapGetters("screen", ["isBlockedScreen"]),
+    selectedPortalSlug() {
+      return this.selectedPortal.slug || null;
+    },
     selectedProperties() {
       if (!this.listProperties) return [];
-      return this.listProperties.slice(0, 10);
+
+      if (this.selectedPortalSlug === "zap") {
+        return this.selectFilteredProperties(this.listZapProperties);
+      } else if (this.selectedPortalSlug === "vivareal") {
+        return this.selectFilteredProperties(this.listVivaProperties);
+      }
+      return this.selectFilteredProperties(this.listProperties);
     },
   },
   data: () => ({
@@ -67,6 +82,14 @@ export default {
   methods: {
     ...mapActions("properties", ["getProperties"]),
     ...mapActions("screen", ["blockScreen", "unblockScreen"]),
+    selectFilteredProperties(portalProperties) {
+      if (!this.filters.sale) return portalProperties.rental.slice(0, 21);
+      else if (!this.filters.rental) return portalProperties.sale.slice(0, 21);
+      return (
+        portalProperties.properties.slice(0, 21) ||
+        portalProperties.slice(0, 21)
+      );
+    },
   },
   async fetch() {
     this.blockScreen();
