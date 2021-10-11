@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-    <property-detail :selected-property="selectedProperty"></property-detail>
-  </v-container>
+  <property-detail :selected-property="selectedProperty"></property-detail>
 </template>
 
 <script>

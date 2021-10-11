@@ -25,18 +25,6 @@
           >
           <span v-else class="font-weight-regular"> / venda</span>
         </p>
-        <span class="font-weight-black text-body mr-2"
-          >{{ property.usableAreas }} m²</span
-        >
-        <span class="font-weight-black text-body mr-2"
-          ><v-icon>mdi-bed</v-icon> {{ property.bedrooms }}</span
-        >
-        <span class="font-weight-black text-body mr-2"
-          ><v-icon>mdi-toilet</v-icon> {{ property.bathrooms }}</span
-        >
-        <span class="font-weight-black text-body"
-          ><v-icon>mdi-car</v-icon> {{ property.parkingSpaces }}</span
-        >
       </v-card-text>
     </v-card>
   </v-card>
@@ -57,9 +45,6 @@ export default {
     },
   },
   computed: {
-    isSaleProperty() {
-      return this.property.pricingInfos.businessType === "SALE";
-    },
     isRentalProperty() {
       return this.property.pricingInfos.businessType === "RENTAL";
     },

@@ -97,10 +97,11 @@ export function formatPrice(
   price,
   currency = "R$ ",
   decimalSeparator = ",",
-  thousandSeparator = "."
+  thousandSeparator = ".",
+  precision = 0
 ) {
   return `${currency}${Number(price)
-    .toFixed(2)
+    .toFixed(precision)
     .replace(/\B(?=(\d{3})+\.)/g, `$&${thousandSeparator}`)
     .replace(/\.([^\\.]*)$/, `${decimalSeparator}$1`)}`;
 }
