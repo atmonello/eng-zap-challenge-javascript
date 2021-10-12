@@ -20,11 +20,15 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
+  globals: {
+    id: "atmonello-eng-zap-challenge-javascript",
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["~/assets/main.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: "~/plugins/Gmap.js" }],
+  plugins: [{ src: "~/plugins/Gmap.js" }, { src: "~/plugins/Api.js" }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -44,10 +48,7 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {
-    baseURL:
-      "http://grupozap-code-challenge.s3-website-us-east-1.amazonaws.com/sources/",
-  },
+  axios: {},
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
