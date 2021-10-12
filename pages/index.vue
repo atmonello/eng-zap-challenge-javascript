@@ -2,12 +2,18 @@
   <v-container class="challenge__home my-16">
     <v-row class="pt-10">
       <v-col cols="12" class="d-flex justify-center">
-        <img class="challenge__home__logo--group" src="/logo-grupo.png" alt="Logo do GrupoZap" />
+        <img
+          class="challenge__home__logo--group"
+          src="/logo-grupo.png"
+          alt="Logo do GrupoZap"
+        />
       </v-col>
     </v-row>
     <v-row class="py-6 text-center">
       <v-col cols="12">
-        <h3 class="text-h3">Clique abaixo para filtrar os imóveis por portal</h3>
+        <h3 class="text-h3">
+          Clique abaixo para filtrar os imóveis por portal
+        </h3>
       </v-col>
     </v-row>
     <v-row class="py-6">
@@ -37,6 +43,15 @@ export default {
   },
   computed: {
     ...mapGetters("portals", ["listPortals"]),
+  },
+  created() {
+    // eslint-disable-next-line
+    if (process.client) {
+      this.listPortals.forEach(({ slug }) => {
+        localStorage.removeItem(`${slug}_pagination`);
+        localStorage.removeItem(`${slug}_filters`);
+      });
+    }
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <v-card shaped d>
-    <v-carousel continuous hide-delimiter-background height="200">
+  <v-card shaped :min-height="$vuetify.breakpoint.mdAndDown ? 300 : 350">
+    <v-carousel continuous hide-delimiters height="200">
       <v-carousel-item
         v-for="(image, index) in property.images"
         :key="`${property.id}-image-${index}`"
@@ -10,7 +10,7 @@
         append
       ></v-carousel-item>
     </v-carousel>
-    <v-card :to="property.id" nuxt append>
+    <v-card :to="property.id" nuxt append height="100%" elevation="0">
       <v-card-text>
         <span class="text-body-1 font-weight-regular">
           Imóvel em {{ property.address.neighborhood }},

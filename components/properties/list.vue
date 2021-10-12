@@ -4,11 +4,11 @@
       <v-col
         cols="12"
         md="6"
-        lg="4"
+        xl="3"
         v-for="property in properties"
         :key="property.id"
       >
-        <list-item :property="property"></list-item>
+        <list-item :property="property" />
       </v-col>
     </v-row>
   </v-container>
