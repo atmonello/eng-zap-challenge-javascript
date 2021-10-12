@@ -4,10 +4,10 @@
       <p class="text-subtitle-2 font-weight-bold d-block d-sm-none">
         {{ priceInfo.businessType === "SALE" ? "Valor" : "Aluguel" }}
       </p>
-      <p class="text-subtitle-1 text-sm-h2 text-xl-h1 font-weight-bold">
+      <p class="text-subtitle-1 text-sm-h2 text-xl-h3 font-weight-bold">
         {{ formatPrice(priceInfo.price) }}
         <span
-          class="d-none d-sm-inline-block text-h4"
+          class="d-none d-sm-inline-block text-h5"
           v-if="priceInfo.businessType === 'RENTAL'"
         >
           / mês</span
@@ -24,7 +24,7 @@
         "
       >
         <p class="text-subtitle-2 pr-sm-2">Condomínio</p>
-        <p class="d-sm-inline-block text-xl-h1 text-subtitle-1">
+        <p class="d-sm-inline-block text-xl-h6 text-subtitle-1">
           <span v-if="Number(priceInfo.monthlyCondoFee)">
             {{ formatPrice(priceInfo.monthlyCondoFee) }}
           </span>
@@ -35,7 +35,7 @@
         class="d-flex justify-space-between justify-sm-start align-sm-center"
       >
         <p class="text-subtitle-2 pr-sm-2">IPTU</p>
-        <p class="d-sm-inline-block text-xl-h1 text-subtitle-1">
+        <p class="d-sm-inline-block text-xl-h6 text-subtitle-1">
           <span v-if="Number(priceInfo.yearlyIptu)">
             {{ formatPrice(priceInfo.yearlyIptu) }}
           </span>
