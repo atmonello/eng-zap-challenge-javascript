@@ -28,7 +28,13 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="8" lg="9">
-          <properties-list :properties="selectedProperties" />
+          <properties-list :properties="propertiesPageItems" />
+          <v-pagination
+            total-visible="5"
+            circle
+            :length="totalPages"
+            v-model="pagination.currentPage"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -62,7 +68,7 @@ export default {
     selectedPortalSlug() {
       return this.selectedPortal.slug || null;
     },
-    selectedProperties() {
+    properties() {
       if (!this.listProperties) return [];
 
       if (this.selectedPortalSlug === "zap") {
@@ -72,23 +78,33 @@ export default {
       }
       return this.selectFilteredProperties(this.listProperties);
     },
+    totalPages() {
+      return Math.ceil(this.properties.length / this.pagination.pageSize);
+    },
+    propertiesPageItems() {
+      return this.properties.slice(
+        (this.pagination.currentPage - 1) * this.pagination.pageSize,
+        this.pagination.currentPage * this.pagination.pageSize
+      );
+    },
   },
   data: () => ({
     filters: {
       rental: true,
       sale: true,
     },
+    pagination: {
+      pageSize: 20,
+      currentPage: 1,
+    },
   }),
   methods: {
     ...mapActions("properties", ["getProperties"]),
     ...mapActions("screen", ["blockScreen", "unblockScreen"]),
     selectFilteredProperties(portalProperties) {
-      if (!this.filters.sale) return portalProperties.rental.slice(0, 21);
-      else if (!this.filters.rental) return portalProperties.sale.slice(0, 21);
-      return (
-        portalProperties.properties.slice(0, 21) ||
-        portalProperties.slice(0, 21)
-      );
+      if (!this.filters.sale) return portalProperties.rental;
+      else if (!this.filters.rental) return portalProperties.sale;
+      return portalProperties.properties || portalProperties;
     },
   },
   async fetch() {
