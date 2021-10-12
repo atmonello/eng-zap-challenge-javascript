@@ -24,7 +24,7 @@ export default {
   css: ["~/assets/main.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [{ src: "~/plugins/Gmap.js" }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -45,7 +45,8 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: "http://grupozap-code-challenge.s3-website-us-east-1.amazonaws.com/sources/"
+    baseURL:
+      "http://grupozap-code-challenge.s3-website-us-east-1.amazonaws.com/sources/",
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -79,7 +80,11 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    // extend() {
+    //   transpile: [/^gmap-vue($|\/)/];
+    // },
+  },
 
   server: {
     port: 3000,
