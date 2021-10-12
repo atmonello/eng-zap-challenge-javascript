@@ -94,13 +94,15 @@ export const vivaValidation = {
 };
 
 export function formatPrice(
-  price,
-  currency = "R$ ",
-  decimalSeparator = ",",
-  thousandSeparator = "."
+  val,
+  precision = 2,
+  decimal = ",",
+  separator = ".",
+  prefix = "R$"
 ) {
-  return `${currency}${Number(price)
+  const formatted = `${prefix}${Number(val)
     .toFixed(2)
-    .replace(/\B(?=(\d{3})+\.)/g, `$&${thousandSeparator}`)
-    .replace(/\.([^\\.]*)$/, `${decimalSeparator}$1`)}`;
+    .replace(/\B(?=(\d{3})+\.)/g, `$&${separator}`)
+    .replace(/\.([^\\.]*)$/, `${decimal}$1`)}`;
+  return precision > 0 ? formatted : formatted.split(decimal)[0];
 }

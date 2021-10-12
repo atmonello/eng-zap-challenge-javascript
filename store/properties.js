@@ -12,7 +12,7 @@ export const mutations = {
 
 export const actions = {
   async getProperties({ commit }) {
-    const { data } = await this.$axios.get("/source-1.json");
+    const { data } = await this.$zapApi.get("/source-1.json");
     commit("setProperties", data);
   },
 };
