@@ -13,6 +13,10 @@ module.exports = {
   watchman: false,
   snapshotSerializers: ["<rootDir>/node_modules/jest-serializer-vue"],
   collectCoverage: true,
-  collectCoverageFrom: ["components/**/*.{js,vue}", "!**/node_modules/**"],
+  collectCoverageFrom: [
+    "components/**/*.{js,vue}",
+    "utils/**/*.{js,vue}",
+    "!**/node_modules/**",
+  ],
   testEnvironment: "jsdom",
 };
