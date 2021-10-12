@@ -3,7 +3,7 @@
   <div v-else>
     <v-container fluid>
       <v-row>
-        <v-col cols="12" md="4" lg="3">
+        <v-col cols="12" md="3" lg="2">
           <v-card class="pb-4" tile>
             <v-card-title :class="[selectedPortal.color, 'mb-4']">
               <v-img :src="selectedPortal.logo" contain height="36" />
@@ -16,6 +16,7 @@
                 label="Aluguel"
                 class="px-4"
                 :disabled="!filters.sale"
+                @change="updateFilters"
               ></v-checkbox>
               <v-checkbox
                 hide-details
@@ -23,17 +24,19 @@
                 label="Venda"
                 class="px-4"
                 :disabled="!filters.rental"
+                @change="updateFilters"
               ></v-checkbox>
             </v-card-actions>
           </v-card>
         </v-col>
-        <v-col cols="12" md="8" lg="9">
-          <properties-list :properties="propertiesPageItems" />
+        <v-col cols="12" md="9" lg="10">
+          <properties-list :properties="currentItems" />
           <v-pagination
             total-visible="5"
             circle
             :length="totalPages"
             v-model="pagination.currentPage"
+            @input="updatePagination"
           />
         </v-col>
       </v-row>
@@ -81,12 +84,6 @@ export default {
     totalPages() {
       return Math.ceil(this.properties.length / this.pagination.pageSize);
     },
-    propertiesPageItems() {
-      return this.properties.slice(
-        (this.pagination.currentPage - 1) * this.pagination.pageSize,
-        this.pagination.currentPage * this.pagination.pageSize
-      );
-    },
   },
   data: () => ({
     filters: {
@@ -97,6 +94,7 @@ export default {
       pageSize: 20,
       currentPage: 1,
     },
+    currentItems: [],
   }),
   methods: {
     ...mapActions("properties", ["getProperties"]),
@@ -106,10 +104,47 @@ export default {
       else if (!this.filters.rental) return portalProperties.sale;
       return portalProperties.properties || portalProperties;
     },
+    updateFilters() {
+      // eslint-disable-next-line
+      if (process.client) {
+        localStorage.setItem(
+          `${this.selectedPortalSlug}_filters`,
+          JSON.stringify(this.filters)
+        );
+      }
+    },
+    updatePagination() {
+      // eslint-disable-next-line
+      if (process.client) {
+        localStorage.setItem(
+          `${this.selectedPortalSlug}_pagination`,
+          JSON.stringify(this.pagination)
+        );
+      }
+      this.currentItems = this.properties.slice(
+        (this.pagination.currentPage - 1) * this.pagination.pageSize,
+        this.pagination.currentPage * this.pagination.pageSize
+      );
+    },
+    readPageSavedState() {
+      // eslint-disable-next-line
+      if (process.client) {
+        this.filters =
+          JSON.parse(
+            localStorage.getItem(`${this.selectedPortalSlug}_filters`)
+          ) || this.filters;
+        this.pagination =
+          JSON.parse(
+            localStorage.getItem(`${this.selectedPortalSlug}_pagination`)
+          ) || this.pagination;
+      }
+    },
   },
   async fetch() {
     this.blockScreen();
     await this.getProperties();
+    this.readPageSavedState();
+    this.updatePagination();
     this.unblockScreen();
   },
 };

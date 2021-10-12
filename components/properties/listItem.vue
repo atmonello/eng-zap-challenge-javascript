@@ -1,6 +1,6 @@
 <template>
   <v-card shaped :min-height="$vuetify.breakpoint.mdAndDown ? 300 : 350">
-    <v-carousel continuous hide-delimiter-background height="200">
+    <v-carousel continuous hide-delimiters height="200">
       <v-carousel-item
         v-for="(image, index) in property.images"
         :key="`${property.id}-image-${index}`"
