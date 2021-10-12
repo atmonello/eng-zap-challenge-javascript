@@ -1,7 +1,13 @@
-.theme--dark.v-application {
-  background-color: var(--v-background-base, #121212) !important;
-}
+#atmonello-eng-zap-challenge-javascript {
+  .theme--dark.v-application {
+    background-color: var(--v-background-base, #121212) !important;
+  }
 
-.theme--light.v-application {
-  background-color: var(--v-background-base, white) !important;
+  .theme--light.v-application {
+    background-color: var(--v-background-base, white) !important;
+  }
+
+  .v-application .text-h6 {
+    line-height: 1.5rem;
+  }
 }
