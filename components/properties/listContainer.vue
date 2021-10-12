@@ -140,7 +140,7 @@ export default {
       }
     },
   },
-  async fetch() {
+  async created() {
     this.blockScreen();
     await this.getProperties();
     this.readPageSavedState();

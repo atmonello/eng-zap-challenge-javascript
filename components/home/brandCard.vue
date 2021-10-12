@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  name: "home-brand-card",
   props: {
     logoImage: {
       type: String,

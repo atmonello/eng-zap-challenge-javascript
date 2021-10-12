@@ -104,7 +104,6 @@ h1 {
 </style>
 
 <script>
-import { gmapApi } from "gmap-vue";
 import { mapActions, mapGetters } from "vuex";
 import DetailedFinance from "@/components/property/detailedFinance.vue";
 import DetailedFeatures from "@/components/property/detailedFeatures.vue";
@@ -128,7 +127,6 @@ export default {
   },
   computed: {
     ...mapGetters("screen", ["isBlockedScreen"]),
-    google: gmapApi,
     isRental() {
       return this.selectedProperty.pricingInfos.businessType === "RENTAL";
     },
@@ -173,7 +171,7 @@ export default {
       }
     },
   },
-  async fetch() {
+  async created() {
     this.blockScreen();
     this.propertyAddress = await this.getPropertyAddress();
     this.unblockScreen();

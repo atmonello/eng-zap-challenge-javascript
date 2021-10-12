@@ -1,8 +1,8 @@
-import ThemeSwitcher from "@/components/shared/themeSwitch.vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
-import { createLocalVue, mount } from "@vue/test-utils";
 import "./test.setup";
+import { createLocalVue, mount } from "@vue/test-utils";
+import ThemeSwitcher from "@/components/shared/themeSwitch.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -18,7 +18,7 @@ describe("ThemeSwitcher component", () => {
       store,
       mocks: {
         $nuxt: {
-          $vuetify: { theme: { dark: theme } }
+          $vuetify: { theme: { dark: theme } },
         },
       },
     });
@@ -29,12 +29,35 @@ describe("ThemeSwitcher component", () => {
   });
 
   test("render component to the screen", async () => {
+    store = new Vuex.Store({
+      modules: {
+        screen: {
+          namespaced: true,
+          actions: {
+            setLightTheme: jest.fn(),
+            setDarkTheme: jest.fn(),
+          },
+          mutations: {
+            setTheme: jest.fn(),
+          },
+          state: {
+            theme: "light",
+          },
+          getters: {
+            isDarkTheme: jest.fn(),
+            isLightTheme: jest.fn(),
+          },
+        },
+      },
+    });
     const wrapper = createComponent({ theme: false });
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.findAllComponents({
-      name: "theme-switcher"
-    })).toHaveLength(1);
+    expect(
+      wrapper.findAllComponents({
+        name: "theme-switcher",
+      })
+    ).toHaveLength(1);
   });
 
   test("change theme to dark", async () => {
@@ -50,15 +73,15 @@ describe("ThemeSwitcher component", () => {
             setTheme: jest.fn(),
           },
           state: {
-            theme: "light"
+            theme: "light",
           },
           getters: {
             isDarkTheme: jest.fn(),
             isLightTheme: jest.fn(),
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
     const wrapper = createComponent({ theme: false });
     await wrapper.vm.$nextTick();
 
@@ -83,17 +106,17 @@ describe("ThemeSwitcher component", () => {
             setTheme: jest.fn(),
           },
           state: {
-            theme: "light"
+            theme: "light",
           },
           getters: {
             isDarkTheme: jest.fn(),
             isLightTheme: jest.fn(),
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
     const wrapper = createComponent({ theme: true });
-    wrapper.setData({ isDark: true })
+    wrapper.setData({ isDark: true });
 
     await wrapper.vm.$nextTick();
     await wrapper.find("input").trigger("click");
